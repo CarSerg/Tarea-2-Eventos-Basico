@@ -72,7 +72,7 @@ public class GUI_Presentacion extends JFrame {
         });
         }
 
-        private class Escucha implements    {
+        private class Escucha implements ActionListener {
             private ImageIcon image;
 
             @Override
