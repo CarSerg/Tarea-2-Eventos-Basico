@@ -4,8 +4,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class GUI_Presentacion extends JFrame {
     //atributos
@@ -45,17 +44,18 @@ public class GUI_Presentacion extends JFrame {
         this.add(panelDatos, BorderLayout.CENTER);
 
         miFoto = new JButton("Este soy yo");
-        miFoto.addActionListener(escucha);
+        miFoto.addMouseListener(escucha);
         miHobby = new JButton("Este es mi Hobby");
-        miHobby.addActionListener(escucha);
+        miHobby.addMouseListener(escucha);
         misExpectativas = new JButton("Creo que...");
-        misExpectativas.addActionListener(escucha);
+        misExpectativas.addKeyListener(escucha);
 
         panelBotones = new JPanel();
         panelBotones.add(miFoto);
         panelBotones.add(miHobby);
         panelBotones.add(misExpectativas);
         panelBotones.setBackground(new Color(135,36,53));
+        panelBotones.setFocusable(true);
 
         this.add(panelBotones, BorderLayout.SOUTH);
 
@@ -72,11 +72,11 @@ public class GUI_Presentacion extends JFrame {
         });
         }
 
-        private class Escucha implements ActionListener {
+        private class Escucha extends MouseAdapter implements KeyListener {
             private ImageIcon image;
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 //  JOptionPane.showMessageDialog(null,"Oprimiste boton");
                 panelDatos.removeAll();
                 if (e.getSource() == miFoto) {
@@ -85,26 +85,8 @@ public class GUI_Presentacion extends JFrame {
                     panelDatos.add(labelImagen);
 
                 } else {
-                    if (e.getSource() == miHobby) {
+                    if (e.getSource() == miHobby && e.getClickCount()==2) {
                         image = new ImageIcon(getClass().getResource("/recursos/senderismo.jpg"));
-                        labelImagen.setIcon(image);
-                        panelDatos.add(labelImagen);
-                    } else {
-                        textoExpectativas.setText("Mi nombre es Sergio Carmona, tengo 23 años y quiero " +
-                                                    "ser desarrollador de software. \n"+
-                                                    "Mis hobbys son hacer caminatas por la naturaleza, " +
-                                                    "escuchar música y salir con mis amigos. \n" +
-                                                    "Espero aprender lo que más pueda en este curso para " +
-                                                    "lograr crear interfaces gráficas completas, amigables" +
-                                                    " y eficientes");
-                        textoExpectativas.setBackground(new Color(135,36,53));
-                        textoExpectativas.setFont(new Font("TimesRoman", Font.PLAIN, 18));
-                        textoExpectativas.setForeground(Color.ORANGE);
-                        textoExpectativas.setLineWrap(true);
-
-                        panelDatos.add(textoExpectativas);
-
-                        image = new ImageIcon(getClass().getResource("/recursos/programando.png"));
                         labelImagen.setIcon(image);
                         panelDatos.add(labelImagen);
                     }
@@ -114,6 +96,43 @@ public class GUI_Presentacion extends JFrame {
                 revalidate();
 
                 repaint();
+            }
+            @Override
+            public void keyTyped(KeyEvent e){
+                panelDatos.removeAll();
+                if(e.getKeyChar()==KeyEvent.VK_M){
+                    textoExpectativas.setText("Mi nombre es Sergio Carmona, tengo 23 años y quiero " +
+                            "ser desarrollador de software. \n" +
+                            "Mis hobbys son hacer caminatas por la naturaleza, " +
+                            "escuchar música y salir con mis amigos. \n" +
+                            "Espero aprender lo que más pueda en este curso para " +
+                            "lograr crear interfaces gráficas completas, amigables" +
+                            " y eficientes");
+                    textoExpectativas.setBackground(new Color(135, 36, 53));
+                    textoExpectativas.setFont(new Font("TimesRoman", Font.PLAIN, 18));
+                    textoExpectativas.setForeground(Color.ORANGE);
+                    textoExpectativas.setLineWrap(true);
+
+                    panelDatos.add(textoExpectativas);
+
+                    image = new ImageIcon(getClass().getResource("/recursos/programando.png"));
+                    labelImagen.setIcon(image);
+                    panelDatos.add(labelImagen);
+                }
+
+                revalidate();
+
+                repaint();
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
             }
         }
     }
